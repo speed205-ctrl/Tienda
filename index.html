@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TecnoCell — Accesorios de PC y Teléfono</title>
+    <meta name="description" content="Tienda de accesorios de PC, teléfono y belleza. Envíos a toda Venezuela. Pedidos por WhatsApp.">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/400.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/500.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/600.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/700.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- ══ NAV ══ -->
+    <nav class="nav">
+        <div class="navIn">
+            <a class="logo" href="#">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" />
+                </svg>
+                TecnoCell
+            </a>
+
+            <div class="navLinks">
+                <a href="#productos">Catálogo</a>
+                <a href="#destacados">Destacados</a>
+                <a href="#como">Cómo comprar</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+
+            <button class="bagBtn" id="openCart" aria-label="Abrir bolsa">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 7h12l1 14H5L6 7z" />
+                    <path d="M9 7a3 3 0 0 1 6 0" />
+                </svg>
+                <span class="bagN" id="cartCount">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ══ HERO ══ -->
+    <section class="hero">
+        <div class="wrap">
+            <p class="eyebrow">Nuevo catálogo 2026</p>
+            <h1>Potencia tu mundo.</h1>
+            <p class="sub">Accesorios de PC y teléfono con la calidad que mereces. Pide por WhatsApp y recíbelo en toda Venezuela.</p>
+            <div class="ctaRow">
+                <a class="btnP" href="#productos">Comprar ahora</a>
+                <a class="linkA" href="https://wa.me/584121585370?text=%C2%A1Hola%20TecnoCell!%20Quiero%20informaci%C3%B3n." target="_blank">
+                    Hablar por WhatsApp <span class="chev">›</span>
+                </a>
+            </div>
+        </div>
+        <div class="heroImg rv">
+            <img src="https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/1b84cadb5-c153-43f5-830d-36e19be7e3a6.png" alt="Accesorios TecnoCell">
+        </div>
+    </section>
+
+    <!-- ══ BANNERS DESTACADOS ══ -->
+    <section class="tiles" id="destacados">
+        <div class="tile dark rv">
+            <p class="eyebrow">Setup gamer</p>
+            <h3>Teclado Mecánico RGB.</h3>
+            <p>Precisión que se siente en cada tecla.</p>
+            <a class="linkA" href="#productos" onclick="goCat('pc')">
+                Comprar <span class="chev">›</span>
+            </a>
+            <img src="https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/196a9ff00-34b6-45ad-84c8-142bfa32bc91.png" alt="Teclado mecánico">
+        </div>
+
+        <div class="tile light rv">
+            <p class="eyebrow">Carga rápida</p>
+            <h3>25W de poder. USB‑C.</h3>
+            <p>Tu teléfono al 100% en menos tiempo.</p>
+            <a class="linkA" href="#productos" onclick="goCat('tlf')">
+                Comprar <span class="chev">›</span>
+            </a>
+            <img src="https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/1f1634d8e-9c80-463e-b685-361b7114b879.png" alt="Cargador rápido">
+        </div>
+    </section>
+
+    <!-- ══ CATÁLOGO ══ -->
+    <section class="catalog" id="productos">
+        <div class="wrap">
+            <h2 class="rv">Catálogo.</h2>
+            <p class="h2sub rv">Todo lo que tu equipo necesita, en un solo lugar.</p>
+
+            <!-- Category chips -->
+            <div class="seg rv" id="chips">
+                <button class="active" data-cat="all">Todos</button>
+                <button data-cat="pc">PC</button>
+                <button data-cat="tlf">Teléfono</button>
+                <button data-cat="belleza">Belleza</button>
+            </div>
+
+            <!-- Search -->
+            <div class="searchW rv">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" />
+                </svg>
+                <input id="search" type="search" placeholder="Buscar en TecnoCell" autocomplete="off">
+            </div>
+
+            <!-- Product grid -->
+            <div class="grid" id="grid"></div>
+        </div>
+    </section>
+
+    <!-- ══ CÓMO COMPRAR ══ -->
+    <section class="how" id="como">
+        <h2 class="rv">Comprar es fácil.</h2>
+        <p class="h2sub rv">Tres pasos y listo.</p>
+        <div class="stepsG rv">
+            <div class="step">
+                <div class="n">1</div>
+                <h3>Explora</h3>
+                <p>Navega el catálogo y añade tus productos favoritos a la bolsa.</p>
+            </div>
+            <div class="step">
+                <div class="n">2</div>
+                <h3>Revisa</h3>
+                <p>Ajusta cantidades y verifica el total de tu pedido en tiempo real.</p>
+            </div>
+            <div class="step">
+                <div class="n">3</div>
+                <h3>Pide por WhatsApp</h3>
+                <p>Envía tu pedido armado al +58 412‑1585370 y coordina pago y envío.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
+    <footer id="contacto">
+        <div class="wrap">
+            <div class="footG">
+                <div>
+                    <h4>TecnoCell</h4>
+                    <p>Tienda de accesorios de PC, teléfono y belleza. Atención personalizada por WhatsApp y envíos a toda Venezuela.</p>
+                    <p class="num" style="margin-top:10px">+58 412‑1585370</p>
+                    <p><a href="https://wa.me/584121585370" target="_blank">Abrir chat ›</a></p>
+                </div>
+                <div>
+                    <h4>Catálogo</h4>
+                    <p><a href="#productos" onclick="goCat('pc')">Productos de PC</a></p>
+                    <p><a href="#productos" onclick="goCat('tlf')">Accesorios de teléfono</a></p>
+                    <p><a href="#productos" onclick="goCat('belleza')">Belleza y skincare</a></p>
+                </div>
+                <div>
+                    <h4>Información</h4>
+                    <p>Envíos a toda Venezuela (24–72 h).</p>
+                    <p>Pago Móvil · USD · Zelle.</p>
+                    <p>Garantía en todos los productos.</p>
+                    <p>Lun – Sáb · 9:00 am – 7:00 pm.</p>
+                    <p style="margin-top: 12px;"><a href="admin.html" style="opacity: 0.6; font-size: 11px;">🔒 Panel Admin</a></p>
+                </div>
+            </div>
+            <div class="copy">
+                <span>Copyright © 2026 TecnoCell. Todos los derechos reservados.</span>
+                <span>Venezuela 🇻🇪</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══ OVERLAY & DRAWER (Cart) ══ -->
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="drawer" id="drawer">
+        <div class="dHead">
+            <h3>Bolsa</h3>
+            <button id="closeCart" aria-label="Cerrar">✕</button>
+        </div>
+        <div class="dBody" id="cartItems"></div>
+        <div class="dFoot">
+            <div class="tRow">
+                <span>Subtotal</span>
+                <strong id="cartTotal">$0.00</strong>
+            </div>
+            <p class="note">El pago y el envío se coordinan por WhatsApp.</p>
+            <button class="waBtn" id="checkout">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.8 1.9.8 2 .1.1.1.3 0 .5-.3.6-.7.9-.5 1.2.7 1.2 1.6 2 2.8 2.6.3.2.5.1.7-.1.2-.2.8-.9 1-1.2.2-.3.4-.2.7-.1.3.1 1.7.8 2 1 .3.1.5.2.5.3.1.2.1.6-.1 1z" />
+                </svg>
+                Enviar pedido por WhatsApp
+            </button>
+        </div>
+    </aside>
+
+    <!-- ══ WHATSAPP FLOTANTE ══ -->
+    <a class="waFloat" href="https://wa.me/584121585370?text=%C2%A1Hola!%20Vengo%20de%20la%20web%20de%20TecnoCell." target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.8 1.9.8 2 .1.1.1.3 0 .5-.3.6-.7.9-.5 1.2.7 1.2 1.6 2 2.8 2.6.3.2.5.1.7-.1.2-.2.8-.9 1-1.2.2-.3.4-.2.7-.1.3.1 1.7.8 2 1 .3.1.5.2.5.3.1.2.1.6-.1 1z" />
+        </svg>
+    </a>
+
+    <!-- ══ TOAST ══ -->
+    <div class="toast" id="toast">Añadido a la bolsa</div>
+
+    <!-- Scripts -->
+    <script src="supabaseClient.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

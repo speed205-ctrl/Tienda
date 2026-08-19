@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCell Admin — Panel de Control</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/400.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/500.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/600.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/700.css">
+    <link rel="stylesheet" href="admin.css">
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <!-- ══ PANTALLA DE CONFIGURACIÓN RÁPIDA (Si faltan claves) ══ -->
+    <div id="configNotice" class="config-banner hidden">
+        <div class="config-banner-in">
+            <span>⚙️ <strong>Supabase no configurado:</strong> Conecta tu URL y Anon Key para sincronizar la base de datos y fotos.</span>
+            <button id="btnOpenConfigModal" class="btn-xs">Configurar Claves</button>
+        </div>
+    </div>
+
+    <!-- ══ MODAL DE CONFIGURACIÓN DE CREDENCIALES ══ -->
+    <div class="modal-overlay hidden" id="configModal">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3>Configurar Supabase</h3>
+                <button class="btn-icon" onclick="closeConfigModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-hint">Ingresa las credenciales de tu proyecto Supabase (en <em>Project Settings > API</em>):</p>
+                <div class="form-group">
+                    <label>Project URL</label>
+                    <input type="text" id="cfgUrl" placeholder="https://xyzcompany.supabase.co">
+                </div>
+                <div class="form-group">
+                    <label>Anon Public Key</label>
+                    <input type="password" id="cfgAnon" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary" onclick="closeConfigModal()">Cancelar</button>
+                <button class="btn-primary" id="btnSaveConfig">Guardar y Conectar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ PANTALLA DE LOGIN ══ -->
+    <section class="auth-view" id="authView">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <div class="brand-badge">
+                    <svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" /></svg>
+                </div>
+                <h2>TecnoCell Admin</h2>
+                <p>Ingresa tus credenciales para gestionar el catálogo</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="adminEmail">Correo Electrónico</label>
+                    <input type="email" id="adminEmail" required placeholder="admin@tecnocell.com" autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="adminPassword">Contraseña</label>
+                    <input type="password" id="adminPassword" required placeholder="••••••••" autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn-primary btn-block" id="btnLogin">
+                    <span>Iniciar Sesión</span>
+                </button>
+            </form>
+
+            <div id="authError" class="auth-msg error hidden"></div>
+
+            <div class="auth-footer">
+                <a href="index.html" class="link-muted">← Volver a la Tienda</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ PANEL DASHBOARD (ADMIN) ══ -->
+    <div class="admin-app hidden" id="adminApp">
+        <!-- Sidebar / Top Nav -->
+        <header class="admin-nav">
+            <div class="admin-nav-wrap">
+                <div class="nav-left">
+                    <a href="index.html" class="admin-logo">
+                        <svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" /></svg>
+                        <span>TecnoCell</span>
+                        <span class="badge-admin">Admin</span>
+                    </a>
+                </div>
+
+                <div class="nav-right">
+                    <span class="user-pill" id="userBadge">admin@tecnocell.com</span>
+                    <button class="btn-outline-sm" id="btnConfigKeys" title="Ajustes de conexión">⚙️ Config</button>
+                    <button class="btn-logout" id="btnLogout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-container">
+                
+                <!-- Header Actions & Metrics -->
+                <div class="dash-head">
+                    <div>
+                        <h1>Gestión de Productos</h1>
+                        <p class="subtitle">Agrega, edita, sube fotos y controla el catálogo en tiempo real.</p>
+                    </div>
+                    <div class="head-actions">
+                        <button class="btn-primary" id="btnNewProduct">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            <span>Nuevo Producto</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Total Productos</span>
+                        <strong class="stat-val" id="statTotal">0</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Activos en Tienda</span>
+                        <strong class="stat-val" id="statActive">0</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Destacados</span>
+                        <strong class="stat-val" id="statFeatured">0</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Categorías</span>
+                        <strong class="stat-val" id="statCategories">0</strong>
+                    </div>
+                </div>
+
+                <!-- Filters Bar -->
+                <div class="filter-card">
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                        <input type="text" id="adminSearch" placeholder="Buscar por nombre o descripción...">
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="adminCatFilter">
+                            <option value="all">Todas las Categorías</option>
+                            <option value="pc">PC</option>
+                            <option value="tlf">Teléfono</option>
+                            <option value="belleza">Belleza</option>
+                        </select>
+
+                        <select id="adminStatusFilter">
+                            <option value="all">Todos los Estados</option>
+                            <option value="active">Solo Activos</option>
+                            <option value="inactive">Solo Ocultos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Product Table / Cards View -->
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th width="70">Foto</th>
+                                <th>Nombre & Detalles</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Destacado</th>
+                                <th class="text-right" width="140">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="7" class="loading-td">Cargando productos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ══ MODAL DE CREAR / EDITAR PRODUCTO ══ -->
+    <div class="modal-overlay hidden" id="productModal">
+        <div class="modal-card modal-lg">
+            <div class="modal-head">
+                <h3 id="modalTitle">Nuevo Producto</h3>
+                <button class="btn-icon" id="btnCloseModal">✕</button>
+            </div>
+
+            <form id="productForm">
+                <input type="hidden" id="prodId">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group flex-2">
+                            <label for="prodName">Nombre del Producto *</label>
+                            <input type="text" id="prodName" required placeholder="Ej: Mouse Gamer RGB X7">
+                        </div>
+
+                        <div class="form-group flex-1">
+                            <label for="prodCategory">Categoría *</label>
+                            <select id="prodCategory" required>
+                                <option value="pc">PC</option>
+                                <option value="tlf">Teléfono</option>
+                                <option value="belleza">Belleza</option>
+                                <option value="otro">Otro / Nuevo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="prodPrice">Precio (USD) *</label>
+                            <input type="number" id="prodPrice" step="0.01" min="0" required placeholder="0.00">
+                        </div>
+
+                        <div class="form-group flex-1 form-check-group">
+                            <label class="check-container">
+                                <input type="checkbox" id="prodActive" checked>
+                                <span class="check-box"></span>
+                                <span class="check-text">Activo (Visible en tienda)</span>
+                            </label>
+                            <label class="check-container">
+                                <input type="checkbox" id="prodFeatured">
+                                <span class="check-box"></span>
+                                <span class="check-text">Producto Destacado</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prodDesc">Descripción</label>
+                        <textarea id="prodDesc" rows="3" placeholder="Detalles, especificaciones o características..."></textarea>
+                    </div>
+
+                    <!-- Uploader de Imagen a Supabase Storage -->
+                    <div class="form-group">
+                        <label>Foto del Producto</label>
+                        <div class="image-uploader-box">
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" id="fileInput" accept="image/*" class="file-hidden">
+                                <div class="upload-placeholder" id="uploadPlaceholder">
+                                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                                    <p><strong>Haz clic para subir una foto</strong> o arrástrala aquí</p>
+                                    <span class="file-tip">PNG, JPG, WEBP hasta 5MB</span>
+                                </div>
+                                <div class="upload-preview hidden" id="uploadPreview">
+                                    <img id="previewImg" src="" alt="Vista previa">
+                                    <button type="button" class="btn-remove-img" id="btnRemoveImg" title="Eliminar imagen">✕</button>
+                                </div>
+                            </div>
+
+                            <div class="url-fallback-row">
+                                <span>o pegar URL externa:</span>
+                                <input type="url" id="prodImgUrl" placeholder="https://ejemplo.com/foto.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-foot">
+                    <button type="button" class="btn-secondary" id="btnCancelModal">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="btnSaveProduct">
+                        <span id="btnSaveText">Guardar Producto</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══ MODAL CONFIRMAR ELIMINACIÓN ══ -->
+    <div class="modal-overlay hidden" id="deleteModal">
+        <div class="modal-card modal-sm">
+            <div class="modal-head">
+                <h3>Eliminar Producto</h3>
+                <button class="btn-icon" onclick="closeDeleteModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar <strong id="deleteProdName">este producto</strong>? Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-secondary" onclick="closeDeleteModal()">Cancelar</button>
+                <button class="btn-danger" id="btnConfirmDelete">Eliminar Definitivamente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TOAST NOTIFICATIONS ══ -->
+    <div class="admin-toast" id="adminToast">Mensaje</div>
+
+    <!-- Scripts -->
+    <script src="supabaseClient.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

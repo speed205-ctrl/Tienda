@@ -1,0 +1,12 @@
+# Logs
+*.log
+npm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment / Local settings
+.env
+.env.local
