@@ -5,9 +5,11 @@
 const WHATS = '584121585370';
 
 const CATLABEL = {
-    pc: 'PC',
+    cargadores: 'Carga y Cables',
+    audio: 'AirPods',
+    watch: 'Apple Watch',
+    magsafe: 'MagSafe',
     tlf: 'Teléfono',
-    belleza: 'Belleza',
     otro: 'General'
 };
 
@@ -15,83 +17,123 @@ const CATLABEL = {
 const DEFAULT_PRODUCTS = [
     {
         id: 1,
-        cat: 'pc',
+        cat: 'cargadores',
         price: 25,
-        name: 'Mouse Gamer RGB X7',
-        desc: '12.000 DPI y 7 botones programables.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/1f53228d6-250e-46ac-9ea2-14de26ec8199.png'
+        name: 'Cargador Completo 20W (Cubo + Cable)',
+        desc: 'Kit de carga rápida con adaptador USB-C de 20W y cable de alta velocidad. Carga hasta un 50% de batería en 30 minutos.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MHJA3?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     },
     {
         id: 2,
-        cat: 'pc',
-        price: 48,
-        name: 'Teclado Mecánico RGB K550',
-        desc: 'Switches mecánicos y rueda de volumen.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/196a9ff00-34b6-45ad-84c8-142bfa32bc91.png'
+        cat: 'cargadores',
+        price: 45,
+        name: 'Cargador Completo Dual USB-C 35W + Cable',
+        desc: 'Adaptador de corriente compacto con doble puerto USB-C de 35W y cable reforzado. Carga dos dispositivos en simultáneo.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MNWM3?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     },
     {
         id: 3,
-        cat: 'pc',
-        price: 32,
-        name: 'Headset Gamer Pro H2',
-        desc: 'Sonido envolvente y micro flexible.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/1bba8861c-1ee8-4326-9ada-4f14a96ac994.png'
+        cat: 'cargadores',
+        price: 35,
+        name: 'Cargador Rápido 50W Doble Puerto GaN',
+        desc: 'Potente cargador ultrarrápido de 50W con tecnología GaN y dos salidas inteligentes (USB-C + USB-A) para laptops y celulares.',
+        img: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=1000&q=80'
     },
     {
         id: 4,
-        cat: 'pc',
-        price: 27,
-        name: 'Webcam Full HD 1080p',
-        desc: 'Con micrófono integrado.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/19e60117a-b5e9-45fb-bb9a-9c00cfd2a142.png'
+        cat: 'cargadores',
+        price: 8,
+        name: 'Cable USB-A a USB-C Alta Resistencia',
+        desc: 'Cable de carga y sincronización ultrarresistente con conectores reforzados antidoblado y recubrimiento duradero.',
+        img: 'https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&w=1000&q=80'
     },
     {
         id: 5,
-        cat: 'tlf',
-        price: 15,
-        name: 'Cargador Rápido 25W USB‑C',
-        desc: 'Carga rápida PD multimarca.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/1f1634d8e-9c80-463e-b685-361b7114b879.png'
+        cat: 'cargadores',
+        price: 12,
+        name: 'Cable USB-A a Lightning Clásico (1 m)',
+        desc: 'Cable de 1 metro para conexión y sincronización estable de iPhone, iPad y estuches de AirPods.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MXLY2?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     },
     {
         id: 6,
-        cat: 'tlf',
-        price: 8,
-        name: 'Cable Trenzado USB‑C 2 m',
-        desc: 'Nylon reforzado y conectores de aluminio.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/102702188-0d43-46fa-9b2b-de888ac7db64.png'
+        cat: 'cargadores',
+        price: 19,
+        name: 'Cable USB-C a USB-C Trenzado 60W (1 m)',
+        desc: 'Cable con recubrimiento de tejido trenzado. Compatible con Power Delivery de 60W para carga ultra rápida.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQKJ3?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     },
     {
         id: 7,
-        cat: 'tlf',
-        price: 22,
-        name: 'Power Bank 10.000 mAh',
-        desc: 'Doble salida con pantalla digital.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/15d36eeab-196d-4673-98ff-9fb25f94a230.png'
+        cat: 'audio',
+        price: 99,
+        name: 'Apple AirPods (2.ª Generación)',
+        desc: 'Auriculares inalámbricos con chip H1 de conexión veloz, activación por voz con Siri y más de 24 horas de autonomía.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MV7N2?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     },
     {
         id: 8,
-        cat: 'tlf',
-        price: 18,
-        name: 'Earbuds Bluetooth TWS',
-        desc: 'Control táctil y estuche de carga.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/1ccaad71a-947d-4d26-84e6-8cc209c288b5.png'
+        cat: 'audio',
+        price: 149,
+        name: 'Apple AirPods (3.ª Generación)',
+        desc: 'Audio espacial con seguimiento dinámico de la cabeza, ecualización adaptativa, resistencia IPX4 y estuche MagSafe.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MME73?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     },
     {
         id: 9,
-        cat: 'belleza',
-        price: 35,
-        name: 'Deep Vita C Capsule Cream',
-        desc: 'Vitamina C + Niacinamida 5% · 55 g.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/116f6a03c-819a-41b6-aa3b-946b214a318f.png'
+        cat: 'audio',
+        price: 499,
+        name: 'Apple AirPods Max',
+        desc: 'Auriculares over-ear de alta fidelidad con cancelación activa de ruido profesional, modo ambiente y almohadillas acústicas.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-spacegray-202011?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     },
     {
         id: 10,
-        cat: 'belleza',
-        price: 20,
-        name: 'Ácido Azelaico 10%',
-        desc: 'Fórmula iluminadora · 30 ml.',
-        img: 'https://image.qwenlm.ai/public_source/1310e334-0345-45b6-afbb-14b1c138cbad/1250c8c9f-9605-443b-821b-f454cb109948.png'
+        cat: 'watch',
+        price: 399,
+        name: 'Apple Watch Series 10',
+        desc: 'Diseño ultradelgado con pantalla OLED de amplio ángulo, monitor de ECG, oxígeno en sangre y carga rápida magnética.',
+        img: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=1000&q=80'
+    },
+    {
+        id: 11,
+        cat: 'watch',
+        price: 799,
+        name: 'Apple Watch Ultra 2',
+        desc: 'Smartwatch premium con caja de titanio aeroespacial de 49 mm, pantalla de 3000 nits, GPS dual y batería de hasta 72h.',
+        img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=80'
+    },
+    {
+        id: 12,
+        cat: 'magsafe',
+        price: 89,
+        name: 'Apple MagSafe Battery Pack',
+        desc: 'Batería portátil magnética inalámbrica que se acopla a la perfección a tu iPhone para proporcionar carga automática y segura.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MJWY3?wid=1000&hei=1000&fmt=jpeg&qlt=95'
+    },
+    {
+        id: 13,
+        cat: 'magsafe',
+        price: 39,
+        name: 'Power Bank Magnético MagSafe Pro con Soporte',
+        desc: 'Batería inalámbrica magnética de 10.000 mAh con pata de apoyo abatible integrada, imanes fuertes y puerto USB-C bidireccional.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MJWY3_AV2?wid=1000&hei=1000&fmt=jpeg&qlt=95'
+    },
+    {
+        id: 14,
+        cat: 'magsafe',
+        price: 35,
+        name: 'Billetera MagSafe de Cuero para iPhone',
+        desc: 'Tarjetero de cuero genuino con potentes imanes integrados, protección electromagnética y compatibilidad con la red Buscar.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MM0Y3?wid=1000&hei=1000&fmt=jpeg&qlt=95'
+    },
+    {
+        id: 15,
+        cat: 'magsafe',
+        price: 29,
+        name: 'Billetera MagSafe FineWoven para iPhone',
+        desc: 'Tarjetero magnético en microtwill ecológico FineWoven de tacto suave. Capacidad para 3 tarjetas y soporte Find My.',
+        img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT243?wid=1000&hei=1000&fmt=jpeg&qlt=95'
     }
 ];
 
@@ -151,7 +193,7 @@ async function fetchProducts() {
             const localProds = localStorage.getItem('tecnocell_local_prods');
             if (localProds) {
                 const parsed = JSON.parse(localProds);
-                if (parsed && parsed.length > 0) {
+                if (parsed && parsed.length >= DEFAULT_PRODUCTS.length) {
                     PRODUCTS = parsed.filter(p => p.is_active !== false).map(item => ({
                         id: item.id,
                         cat: item.category || 'pc',
@@ -160,7 +202,12 @@ async function fetchProducts() {
                         desc: item.description || '',
                         img: item.image_url || item.img || 'https://via.placeholder.com/400?text=TecnoCell'
                     }));
+                } else {
+                    PRODUCTS = [...DEFAULT_PRODUCTS];
+                    localStorage.removeItem('tecnocell_local_prods');
                 }
+            } else {
+                PRODUCTS = [...DEFAULT_PRODUCTS];
             }
         }
     } catch (err) {
