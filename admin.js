@@ -197,19 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const client = window.getSupabaseClient ? window.getSupabaseClient() : null;
 
         if (!client || !window.tecnoDb.isConfigured()) {
-            // Fallback demo login si aún no configuró Supabase
-            if (password === 'admin123' || password.length >= 6) {
-                localStorage.setItem('tecnocell_demo_admin', 'true');
-                showDashboard(email + ' (Modo Local)');
-                showToast('Sesión iniciada (Modo Local)');
-            } else {
-                authError.textContent = 'Contraseña incorrecta (mínimo 6 caracteres para modo local).';
-                authError.classList.remove('hidden');
-            }
-            btn.disabled = false;
-            btn.innerHTML = '<span>Iniciar Sesión</span>';
+            // Si Supabase no está configurado, exigir su configuración segura
+            authError.textContent = 'Supabase no está configurado. Haz clic en "Configurar Llaves" arriba para conectar tu base de datos de manera segura.';
+            authError.classList.remove('hidden');
             return;
-        }
 
         try {
             const { data, error } = await client.auth.signInWithPassword({

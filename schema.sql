@@ -30,13 +30,15 @@ TO anon, authenticated
 USING (is_active = true OR auth.role() = 'authenticated');
 
 -- Los administradores autenticados pueden insertar, actualizar y borrar cualquier producto
+-- Los administradores autorizados pueden insertar, actualizar y borrar productos
+-- IMPORTANTE: Configura aquí el correo de tu cuenta administradora de Supabase
 DROP POLICY IF EXISTS "Admins have full access to products" ON public.products;
 CREATE POLICY "Admins have full access to products"
 ON public.products
 FOR ALL
 TO authenticated
-USING (true)
-WITH CHECK (true);
+USING (auth.jwt() ->> 'email' = 'admin@tecnocell.com')
+WITH CHECK (auth.jwt() ->> 'email' = 'admin@tecnocell.com');
 
 -- 4. CONFIGURAR STORAGE BUCKET PARA FOTOS
 -- Crear el bucket 'product-images' si no existe
@@ -72,7 +74,8 @@ ON storage.objects
 FOR DELETE
 TO authenticated
 USING (bucket_id = 'product-images');
--- 5. SEED DATA (Productos Iniciales de TecnoCell)
+
+-- 5. SEED DATA (Productos Iniciales de TecnoCell)
 INSERT INTO public.products (name, description, price, category, image_url, is_active, is_featured)
 VALUES
     ('Cargador Completo 20W (Cubo + Cable)', 'Kit de carga rápida con adaptador USB-C de 20W y cable de alta velocidad. Carga hasta un 50% de batería en 30 minutos.', 25.00, 'cargadores', 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MHJA3?wid=1000&hei=1000&fmt=jpeg&qlt=95', true, true),
